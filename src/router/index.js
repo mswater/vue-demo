@@ -67,6 +67,21 @@ const routes = [
     ]
   },
   {
+    path: "/practise",
+    component: () =>
+      import(/* webpackChunkName: "layouts" */ "../layouts/SimpleLayout"),
+    children: [
+      {
+        path: "circularQueue",
+        name: "circularQueue",
+        component: () =>
+          import(
+            /* webpackChunkName: "practice" */ "../views/Practice/CircularQueue"
+          )
+      }
+    ]
+  },
+  {
     path: "/user",
     component: () =>
       import(/* webpackChunkName: "layouts" */ "../layouts/UserLayout"),
@@ -101,5 +116,15 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 });
+//
+// router.beforeEach((to, from, next) => {
+//   console.log(to.name);
+//   console.log(from.name);
+//   next();
+// });
+// router.afterEach((to, from) => {
+//   console.log(to.fullPath);
+//   console.log(from.params);
+// })
 
 export default router;
