@@ -2,7 +2,7 @@
   <div>
     <div class="outer">
       <div class="inner">
-        <span for="item in queue" :key="`Symbol(item)`">{{ item }}</span>
+        <span v-for="item in queueObj.arrForQueue" :key="item">{{ item }}</span>
       </div>
     </div>
     <div class="btns">
@@ -46,20 +46,23 @@ class CircularQueue {
 export default {
   name: "CircularQueue",
   data() {
+    let queueObj = new CircularQueue(20);
+    console.log(queueObj);
     return {
-      queue: new CircularQueue()
+      queueObj: queueObj
     };
   },
   methods: {
     addItem() {
       let item = Math.ceil(Math.random() * 100);
-      let result = this.queue.enqueue(item);
+      let result = this.queueObj.enqueue(item);
+      console.log(this.queueObj);
       if (result == "full") {
         console.log("队列已满");
       }
     },
     delItem() {
-      let result = this.queue.dequeue();
+      let result = this.queueObj.dequeue();
       if (result == "empty") {
         console.log("队列已清空");
       }
