@@ -15,7 +15,7 @@ VueRouter.prototype.push = function push(location) {
 const routes = [
   {
     path: "/",
-    meta: { authority: ["admin", "user"] },
+    meta: { icon: "folder", authority: ["admin", "user"] },
     component: () =>
       import(/* webpackChunkName: "layouts" */ "../layouts/BasicLayout"),
     children: [
@@ -123,6 +123,26 @@ const routes = [
         meta: { icon: "contacts", title: "关于我们" },
         component: () =>
           import(/* webpackChunkName: "practice" */ "../views/About")
+      }
+    ]
+  },
+  {
+    path: "/plugins",
+    name: "plugins",
+    meta: { icon: "profile", title: "插件库" },
+    component: () =>
+      import(/* webpackChunkName: "layouts" */ "../layouts/BasicLayout"),
+    children: [
+      {
+        path: "/plugins",
+        redirect: "/plugins/toast"
+      },
+      {
+        path: "/plugins/toast",
+        name: "toast",
+        meta: { icon: "profile", title: "toast" },
+        component: () =>
+          import(/* webpackChunkName: "plugins" */ "../views/Plugins/Toast")
       }
     ]
   },

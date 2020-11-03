@@ -61,6 +61,7 @@
         <div class="normal-header">
           <div class="l-part">
             <a-icon
+              v-auth="['admin']"
               v-if="navLayout == 'left'"
               :type="collapsed ? 'menu-unfold' : 'menu-fold'"
               @click="collapsed = !collapsed"
@@ -100,7 +101,7 @@ export default {
     this.selectedKeysMap = {};
     this.openKeysMap = {};
     const menuData = this.getMenuData(this.$router.options.routes, null, null);
-    console.log(this.selectedKeysMap, this.openKeysMap);
+    console.log(menuData);
     return {
       collapsed: false,
       menuData,

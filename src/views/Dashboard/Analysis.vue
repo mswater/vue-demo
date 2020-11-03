@@ -1,56 +1,60 @@
 <template>
   <div>
-    <button @click="add">Add</button>
-    <button @click="remove">remove</button>
-    <button @click="shuffle">shuffle</button>
-    <transition-group name="list" tag="p">
-      <span v-for="number in items" :key="number" class="list-item">{{
-        number
-      }}</span>
-    </transition-group>
+    <Chart :option="chartOption" style="height:500px;"></Chart>
   </div>
 </template>
 
 <script>
-import _ from "lodash";
+import Chart from "../../components/Chart";
+import request from "../../utils/request";
 
 export default {
   name: "Analysis",
+  components: {
+    Chart
+  },
   data() {
     return {
-      items: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-      nextNumber: 10
+      chartOption: {}
     };
   },
+  mounted() {
+    this.getChartData();
+    this.intervalId = setInterval(() => {
+      this.getChartData();
+    }, 3000);
+  },
+  beforeDestroy() {
+    clearInterval(this.intervalId);
+  },
   methods: {
-    randomIndex() {
-      return Math.floor(Math.random() * 10);
-    },
-    add() {
-      this.items.splice(this.randomIndex(), 0, this.nextNumber++);
-    },
-    remove() {
-      this.items.splice(this.randomIndex(), 1);
-    },
-    shuffle() {
-      this.items = _.shuffle(this.items);
+    getChartData() {
+      request({
+        url: "/api/dashboard/chart",
+        method: "get",
+        params: { ID: 12345 }
+      }).then(response => {
+        this.chartOption = {
+          title: {
+            text: "示例图表"
+          },
+          tooltip: {},
+          xAxis: {
+            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"]
+          },
+          yAxis: {},
+          series: [
+            {
+              name: "销量",
+              type: "bar",
+              data: response.data
+            }
+          ]
+        };
+      });
     }
   }
 };
 </script>
 
-<style scoped>
-.list-item {
-  display: inline-block;
-  margin-right: 10px;
-  transition: all 1s ease;
-}
-.list-leave-active {
-  transition: all 1s ease;
-}
-.list-enter,
-.list-leave-to {
-  opacity: 0;
-  transform: translateY(30px);
-}
-</style>
+<style scoped></style>
